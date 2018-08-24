@@ -9,35 +9,38 @@ events {
 
 http {
 
-	include       mime.types;
-	default_type  application/octet-stream;
+    include       mime.types;
+    default_type  application/octet-stream;
 
-	# access_log logs/access.log.gz combined gzip flush=5m;
-        access_log off;
+    # access_log logs/access.log.gz combined gzip flush=5m;
+    access_log off;
 
-        resolver 8.8.8.8;
+    resolver 8.8.8.8;
 
-        ## General Options
-        sendfile       off;   # disable double caching for ZFS
-        tcp_nopush     off;   # sendfile=off so tcp_nopush can not be used
-        tcp_nodelay    on;
+    ## General Options
+    sendfile       off;   # disable double caching for ZFS
+    tcp_nopush     off;   # sendfile=off so tcp_nopush can not be used
+    tcp_nodelay    on;
 
-	keepalive_timeout 60;
-        reset_timedout_connection on;
+    keepalive_timeout 60;
+    reset_timedout_connection on;
 
-	gzip off;
+    gzip off;
 
-        lua_package_path ";;${prefix}../app/?.lua;";
-        lua_code_cache on;
-        init_by_lua_file "../app/init.lua";
-        init_worker_by_lua_file "../app/timer.lua";
+    lua_package_path ";;${prefix}../app/?.lua;";
+    lua_code_cache on;
 
-	server {
-		listen 8001;
-		index index.html;
-		root ../static;
-
-		# include application routes; this path is relative to this conf file!
-		include ../../app/conf/*.conf;
-	}
+    client_body_buffer_size 1M;
+    client_max_body_size 10M;
+        
+    server {
+        listen 8001;
+        index index.html;
+        root ../static;
+                
+        location /upload {
+            default_type text/html;
+            content_by_lua_file ../app/main.lua;
+        }
+    }
 }
