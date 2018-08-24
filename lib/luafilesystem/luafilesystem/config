@@ -1,0 +1,23 @@
+# Installation directories
+
+# Default installation prefix
+PREFIX=/opt/kronometrix/kernel
+
+# System's libraries directory (where binary libraries are installed)
+LUA_LIBDIR= $(PREFIX)/lualib
+
+# Lua includes directory
+LUA_INC= $(PREFIX)/luajit/include/luajit-2.1
+
+# OS dependent
+LIB_OPTION= -shared #for Linux
+
+LIBNAME= $T.so.$V
+
+# Compilation directives
+WARN= -O2 -Wall -fPIC -W -Waggregate-return -Wcast-align -Wmissing-prototypes -Wnested-externs -Wshadow -Wwrite-strings -pedantic
+INCS= -I$(LUA_INC)
+CFLAGS= $(WARN) $(INCS)
+CC= cc
+
+# $Id: config,v 1.21 2007/10/27 22:42:32 carregal Exp $
