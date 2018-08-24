@@ -1,0 +1,16 @@
+name: "kvcam"
+version: "1.0.0"
+origin: "sysutils/kvcam"
+comment: "Kronometrix Video Camera HTTP Service"
+arch: "freebsd:10:i386"
+desc: "A real-time, event based data analytics platform for ICT, IoT, Environmental Monitoring and Meteorology, focusing on deep domain expertise and prescriptive analytics."
+maintainer: support@kronometrix.com
+www: https://www.kronometrix.com
+prefix: /opt/kronometrix
+users: [
+    "krmx"
+]
+groups: [
+    "krmx"
+]
+licenses: ["MIT"]

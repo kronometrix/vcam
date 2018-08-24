@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# 
+# /etc/init.d/kvcam
+#
+# The MIT License (MIT)
+#
+# Copyright (c) 2017 Stefan Parvu
+# Copyright (c) 2017 SDR Dynamics Oy
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#
+# Add the following lines to /etc/rc.conf to enable Kronometrix
+#
+# kvcam_enable="YES"
+# kvcam_user="krmx"
+
+. /etc/rc.subr
+
+name=kvcam
+rcvar=kvcam_enable
+
+load_rc_config ${name}
+
+command=/opt/kronometrix/vcam/etc/kvcam
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+status_cmd="${name}_status"
+
+: ${kvcam_enable="YES"}
+: ${kvcam_user="krmx"}
+: ${kvcam_args=""}
+
+kvcam_start() {
+    unset "${rc_arg}_cmd"
+    local cmd
+    kvcam_args="start"
+    cmd="${command} ${kvcam_args}"
+    su -m ${kvcam_user} -c "${cmd}" 
+}
+
+
+kvcam_stop() {
+    local cmd
+    kvcam_args="stop"
+    cmd="${command} ${kvcam_args}"
+    su -m ${kvcam_user} -c "${cmd}"
+}
+
+
+run_rc_command "$1"
